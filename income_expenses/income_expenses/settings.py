@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'authentication',
+    'expenses',
+    'income',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +57,16 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'income_expenses.urls'
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in' : 'header'
+        }
+    }
+}
 
 TEMPLATES = [
     {
@@ -86,6 +98,8 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
     'NON_FIELD_ERRORS_KEY': 'error',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',

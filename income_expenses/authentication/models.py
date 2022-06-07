@@ -1,10 +1,11 @@
+from os import access
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils import timezone
 # from django.utils.translation import gettext_lazy as _
 
 from .managers import CustomUserManager
-
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255, unique=True)
@@ -24,7 +25,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
     
     def tokens(self):
-        return ""
+        refresh = RefreshToken.for_user(self)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
 
 
 
